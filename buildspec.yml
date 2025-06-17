@@ -29,6 +29,7 @@ phases:
       - cp k8s/mongodb-deployment.yaml k8s-out/mongodb-deployment.yaml
       - cp k8s/mongodb-service.yaml k8s-out/mongodb-service.yaml
       - cp k8s/secrets.yaml k8s-out/secrets.yaml
+      - cp k8s/seed-job.yaml k8s-out/seed-job.yaml
       - ls -R k8s-out
 
   post_build:
@@ -39,8 +40,14 @@ phases:
       - aws eks update-kubeconfig --region $REGION --name eks-cluster-1
       - echo Applying Kubernetes secrets...
       - kubectl apply -f k8s-out/secrets.yaml
-      - echo Applying application and MongoDB manifests...
+      - echo Deploying application and MongoDB...
       - kubectl apply -f k8s-out/
+      - echo Running database seed job...
+      - kubectl apply -f k8s-out/seed-job.yaml
+      - echo Waiting for seed job to complete...
+      - kubectl wait --for=condition=complete job/seed-job --timeout=60s
+      - echo Seed job finished. Deleting job...
+      - kubectl delete job seed-job || true
 
 artifacts:
   base-directory: k8s-out
@@ -50,3 +57,4 @@ artifacts:
     - mongodb-deployment.yaml
     - mongodb-service.yaml
     - secrets.yaml
+    - seed-job.yaml
