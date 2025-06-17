@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: seed-runner
+          image: 026090546401.dkr.ecr.us-east-1.amazonaws.com/mock
+          command: ["sh", "-c"]
+          args:
+            - |
+              node seedDB/category-seed.js &&
+              node seedDB/products-seed.js
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongodb-service:27017/bags-ecommerce
+      restartPolicy: Never
+  backoffLimit: 2
