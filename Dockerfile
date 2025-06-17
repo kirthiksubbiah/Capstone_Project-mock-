@@ -1,4 +1,4 @@
-FROM node:current-alpine
+FROM public.ecr.aws/docker/library/node:20-alpine
 RUN apk add --no-cache make gcc g++ python3
 WORKDIR /app
 COPY . .
