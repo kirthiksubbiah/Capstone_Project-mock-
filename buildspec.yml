@@ -11,9 +11,9 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - ACCOUNT_ID=713881797197
+      - ACCOUNT_ID=026090546401
       - REGION=us-east-1
-      - REPO_NAME=ecommerce-ecr
+      - REPO_NAME=mock
       - IMAGE_TAG=latest
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
 
