@@ -7,6 +7,12 @@ phases:
     commands:
       - echo Installing Node.js dependencies...
       - npm install
+      - echo Installing SonarScanner CLI...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner.zip
+      - mv sonar-scanner-* sonar-scanner
+      - export PATH=$PWD/sonar-scanner/bin:$PATH
+      - echo "export PATH=$PWD/sonar-scanner/bin:\$PATH" >> ~/.bashrc
 
   pre_build:
     commands:
