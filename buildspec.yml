@@ -7,12 +7,11 @@ phases:
     commands:
       - echo Installing Node.js dependencies...
       - npm install
-      - echo Installing SonarScanner CLI...
+      - echo Installing SonarScanner...
       - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip sonar-scanner.zip
-      - mv sonar-scanner-* sonar-scanner
-      - export PATH=$PWD/sonar-scanner/bin:$PATH
-      - echo "export PATH=$PWD/sonar-scanner/bin:\$PATH" >> ~/.bashrc
+      - mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+      - export PATH=$PATH:$(pwd)/sonar-scanner/bin
 
   pre_build:
     commands:
@@ -38,11 +37,7 @@ phases:
       - cp k8s/seed-job.yaml k8s-out/seed-job.yaml
       - ls -R k8s-out
       - echo Running SonarQube Analysis...
-      - sonar-scanner \
-          -Dsonar.projectKey=capstone_mock \
-          -Dsonar.sources=. \
-          -Dsonar.host.url=http://3.87.198.49 \
-          -Dsonar.login=sqp_072d586b179b1068e577f8551e5b41290f591bd9
+      - sonar-scanner -Dsonar.projectKey=capstone_mock -Dsonar.sources=. -Dsonar.host.url=http://3.87.198.49 -Dsonar.login=sqp_072d586b179b1068e577f8551e5b41290f591bd9
 
   post_build:
     commands:
