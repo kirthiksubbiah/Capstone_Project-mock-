@@ -31,6 +31,12 @@ phases:
       - cp k8s/secrets.yaml k8s-out/secrets.yaml
       - cp k8s/seed-job.yaml k8s-out/seed-job.yaml
       - ls -R k8s-out
+      - echo Running SonarQube Analysis...
+      - sonar-scanner \
+          -Dsonar.projectKey=capstone_mock \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=http://3.87.198.49 \
+          -Dsonar.login=sqp_072d586b179b1068e577f8551e5b41290f591bd9
 
   post_build:
     commands:
